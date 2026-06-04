@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../core/database/database_helper.dart';
+import 'package:provider/provider.dart';
+import '../providers/database_provider.dart';
 import '../models/quiz_question.dart';
 import '../models/quiz_result.dart';
 import '../core/theme/theme.dart';
@@ -31,8 +32,9 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Future<void> _loadQuestions() async {
+    final dbProvider = context.read<DatabaseProvider>();
     final topic = _selectedTopic == 'الجميع' ? null : _selectedTopic;
-    final questions = await DatabaseHelper.getRandomQuestions(topic: topic, limit: 10);
+    final questions = await dbProvider.getRandomQuestions(topic: topic, limit: 10);
     setState(() => _questions = questions);
   }
 
@@ -83,7 +85,7 @@ class _QuizScreenState extends State<QuizScreen> {
       date: DateTime.now().toIso8601String(),
     );
 
-    await DatabaseHelper.saveQuizResult(result);
+    await context.read<DatabaseProvider>().saveQuizResult(result);
 
     if (mounted) {
       Navigator.pushReplacement(

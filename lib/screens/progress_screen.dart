@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../core/database/database_helper.dart';
+import 'package:provider/provider.dart';
+import '../providers/database_provider.dart';
 import '../models/user_progress.dart';
 import '../models/quiz_result.dart';
 import '../core/theme/theme.dart';
@@ -23,8 +24,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
   }
 
   Future<void> _loadData() async {
-    final progress = await DatabaseHelper.getUserProgress();
-    final results = await DatabaseHelper.getQuizResults();
+    final dbProvider = context.read<DatabaseProvider>();
+    final progress = await dbProvider.getUserProgress();
+    final results = await dbProvider.getQuizResults();
     setState(() {
       _progress = progress;
       _quizResults = results;

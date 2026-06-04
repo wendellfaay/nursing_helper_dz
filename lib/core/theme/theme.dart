@@ -11,6 +11,11 @@ class AppTheme {
   static const Color errorColor = Color(0xFFE53935);
   static const Color warningColor = Color(0xFFFFA726);
 
+  static const Color darkBackground = Color(0xFF121212);
+  static const Color darkCard = Color(0xFF1E1E1E);
+  static const Color darkTextPrimary = Color(0xFFE0E0E0);
+  static const Color darkTextSecondary = Color(0xFF9E9E9E);
+
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
@@ -62,6 +67,64 @@ class AppTheme {
         ),
         bodyMedium: TextStyle(
           color: textSecondary,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  static ThemeData get darkTheme {
+    return ThemeData(
+      useMaterial3: true,
+      primaryColor: primaryColor,
+      scaffoldBackgroundColor: darkBackground,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: primaryColor,
+        primary: primaryColor,
+        secondary: secondaryColor,
+        surface: darkCard,
+        brightness: Brightness.dark,
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color(0xFF1E1E1E),
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0,
+      ),
+      cardTheme: CardThemeData(
+        color: darkCard,
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+      textTheme: const TextTheme(
+        headlineLarge: TextStyle(
+          color: darkTextPrimary,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+        headlineMedium: TextStyle(
+          color: darkTextPrimary,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+        bodyLarge: TextStyle(
+          color: darkTextPrimary,
+          fontSize: 16,
+        ),
+        bodyMedium: TextStyle(
+          color: darkTextSecondary,
           fontSize: 14,
         ),
       ),

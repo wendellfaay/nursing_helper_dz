@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../core/database/database_helper.dart';
+import 'package:provider/provider.dart';
+import '../providers/database_provider.dart';
 import '../models/semester.dart';
 import '../core/theme/theme.dart';
 import 'modules_screen.dart';
@@ -25,7 +26,8 @@ class _SemestersScreenState extends State<SemestersScreen> {
   }
 
   Future<void> _loadSemesters() async {
-    final semesters = await DatabaseHelper.getSemesters(widget.yearId);
+    final dbProvider = context.read<DatabaseProvider>();
+    final semesters = await dbProvider.getSemesters(widget.yearId);
     setState(() {
       _semesters = semesters;
       _loading = false;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/theme/theme.dart';
-import '../core/database/database_helper.dart';
+import '../providers/app_provider.dart';
+import '../providers/database_provider.dart';
 import 'years_screen.dart';
 import 'lessons_list_screen.dart';
 import 'glossary_screen.dart';
@@ -8,41 +10,22 @@ import 'quiz_screen.dart';
 import 'progress_screen.dart';
 import 'search_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _completedLessons = 0;
-  int _totalLessons = 0;
-  double _quizAverage = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadStats();
-  }
-
-  Future<void> _loadStats() async {
-    final completed = await DatabaseHelper.getCompletedLessonsCount();
-    final total = await DatabaseHelper.getTotalLessonsCount();
-    final avg = await DatabaseHelper.getOverallQuizAverage();
-    setState(() {
-      _completedLessons = completed;
-      _totalLessons = total;
-      _quizAverage = avg;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final appProvider = context.watch<AppProvider>();
+    final dbProvider = context.watch<DatabaseProvider>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nursing Helper DZ'),
         actions: [
+          IconButton(
+            icon: Icon(appProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode),
+            onPressed: appProvider.toggleTheme,
+          ),
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () => Navigator.push(
@@ -150,9 +133,9 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 16),
             Row(
               children: [
-                _statCard('الدروس المكتملة', '$_completedLessons / $_totalLessons', AppTheme.successColor),
+                _statCard('الدروس المكتملة', '${dbProvider.completedLessons} / ${dbProvider.totalLessons}', AppTheme.successColor),
                 const SizedBox(width: 12),
-                _statCard('معدل الاختبارات', '${_quizAverage.toStringAsFixed(1)}%', AppTheme.primaryColor),
+                _statCard('معدل الاختبارات', '${dbProvider.quizAverage.toStringAsFixed(1)}%', AppTheme.primaryColor),
               ],
             ),
             const SizedBox(height: 16),

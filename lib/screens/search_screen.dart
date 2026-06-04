@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../core/database/database_helper.dart';
+import 'package:provider/provider.dart';
+import '../providers/database_provider.dart';
 import '../models/lesson.dart';
 import '../models/glossary_term.dart';
 import '../core/theme/theme.dart';
@@ -28,8 +29,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _search(String query) async {
     if (query.trim().isEmpty) return;
     setState(() => _loading = true);
-    final lessons = await DatabaseHelper.searchLessons(query.trim());
-    final terms = await DatabaseHelper.searchGlossary(query.trim());
+    final dbProvider = context.read<DatabaseProvider>();
+    final lessons = await dbProvider.searchLessons(query.trim());
+    final terms = await dbProvider.searchGlossary(query.trim());
     setState(() {
       _lessonResults = lessons;
       _termResults = terms;

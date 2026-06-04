@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../core/constants/constants.dart';
-import '../core/database/database_helper.dart';
+import '../providers/database_provider.dart';
 import '../models/lesson.dart';
 import '../core/theme/theme.dart';
 import 'lesson_detail_screen.dart';
@@ -25,7 +26,8 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
 
   Future<void> _loadLessons() async {
     setState(() => _loading = true);
-    final lessons = await DatabaseHelper.getLessons(category: _selectedCategory);
+    final dbProvider = context.read<DatabaseProvider>();
+    final lessons = await dbProvider.getLessons(category: _selectedCategory);
     setState(() {
       _lessons = lessons;
       _loading = false;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/lesson.dart';
-import '../core/database/database_helper.dart';
+import '../providers/database_provider.dart';
 import '../core/theme/theme.dart';
 
 class LessonDetailScreen extends StatefulWidget {
@@ -22,12 +23,8 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
   }
 
   Future<void> _markCompleted() async {
-    await DatabaseHelper.markLessonCompleted(_lesson.id!);
-    await DatabaseHelper.updateUserProgress(
-      _lesson.category,
-      await DatabaseHelper.getCompletedLessonsCount(),
-      await DatabaseHelper.getTotalLessonsCount(),
-    );
+    final dbProvider = context.read<DatabaseProvider>();
+    await dbProvider.markLessonCompleted(_lesson.id!, _lesson.category);
     setState(() => _lesson = Lesson(
       id: _lesson.id,
       moduleId: _lesson.moduleId,

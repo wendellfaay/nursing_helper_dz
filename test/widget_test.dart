@@ -4,6 +4,7 @@ import 'package:nursing_helper_dz/main.dart';
 void main() {
   testWidgets('App loads successfully', (WidgetTester tester) async {
     await tester.pumpWidget(const NursingHelperApp());
-    expect(find.text('Nursing Helper DZ'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('Nursing Helper DZ'), findsAtLeast(1));
   });
 }

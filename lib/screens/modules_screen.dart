@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../core/database/database_helper.dart';
+import 'package:provider/provider.dart';
+import '../providers/database_provider.dart';
 import '../models/module.dart';
 import '../models/lesson.dart';
 import '../core/theme/theme.dart';
@@ -27,10 +28,11 @@ class _ModulesScreenState extends State<ModulesScreen> {
   }
 
   Future<void> _loadModules() async {
-    final modules = await DatabaseHelper.getModules(widget.semesterId);
+    final dbProvider = context.read<DatabaseProvider>();
+    final modules = await dbProvider.getModules(widget.semesterId);
     final Map<int, List<Lesson>> lessonsMap = {};
     for (final m in modules) {
-      lessonsMap[m.id!] = await DatabaseHelper.getLessonsByModule(m.id!);
+      lessonsMap[m.id!] = await dbProvider.getLessonsByModule(m.id!);
     }
     setState(() {
       _modules = modules;
