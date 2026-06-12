@@ -89,7 +89,7 @@ class _SemestersScreenState extends State<SemestersScreen> {
                                     child: Text(
                                       sem.nameAr,
                                       style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 22,
                                         fontWeight: FontWeight.w600,
                                       ),
                                       textAlign: TextAlign.end,

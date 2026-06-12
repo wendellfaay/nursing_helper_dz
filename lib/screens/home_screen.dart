@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/theme/theme.dart';
+import '../core/widgets/menu_card.dart';
+import '../core/widgets/stat_card.dart';
 import '../providers/app_provider.dart';
 import '../providers/database_provider.dart';
 import 'years_screen.dart';
@@ -9,6 +11,7 @@ import 'glossary_screen.dart';
 import 'quiz_screen.dart';
 import 'progress_screen.dart';
 import 'search_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,8 +23,15 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nursing Helper DZ'),
+        title: const Text('الرائد للصحة'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            ),
+          ),
           IconButton(
             icon: Icon(appProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode),
             onPressed: appProvider.toggleTheme,
@@ -45,7 +55,7 @@ class HomeScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             Text(
-              'Nursing Helper DZ',
+              'الرائد للصحة',
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                     color: AppTheme.primaryColor,
                   ),
@@ -61,8 +71,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisSpacing: 16,
                 crossAxisSpacing: 16,
                 children: [
-                  _buildMenuCard(
-                    context,
+                  MenuCard(
                     icon: Icons.school_rounded,
                     title: 'السنوات الدراسية',
                     subtitle: 'تصفح حسب السنة',
@@ -72,8 +81,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => const YearsScreen()),
                     ),
                   ),
-                  _buildMenuCard(
-                    context,
+                  MenuCard(
                     icon: Icons.menu_book_rounded,
                     title: 'جميع الدروس',
                     subtitle: 'دروس وملخصات',
@@ -83,8 +91,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => const LessonsListScreen()),
                     ),
                   ),
-                  _buildMenuCard(
-                    context,
+                  MenuCard(
                     icon: Icons.quiz_rounded,
                     title: 'الاختبارات',
                     subtitle: 'اختبر معلوماتك',
@@ -94,8 +101,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => const QuizScreen()),
                     ),
                   ),
-                  _buildMenuCard(
-                    context,
+                  MenuCard(
                     icon: Icons.translate_rounded,
                     title: 'المصطلحات',
                     subtitle: 'عربي - فرنسي',
@@ -105,8 +111,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => const GlossaryScreen()),
                     ),
                   ),
-                  _buildMenuCard(
-                    context,
+                  MenuCard(
                     icon: Icons.trending_up_rounded,
                     title: 'التقدم',
                     subtitle: 'تتبع تقدمك',
@@ -116,8 +121,7 @@ class HomeScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (_) => const ProgressScreen()),
                     ),
                   ),
-                  _buildMenuCard(
-                    context,
+                  MenuCard(
                     icon: Icons.search_rounded,
                     title: 'البحث',
                     subtitle: 'ابحث في المحتوى',
@@ -133,9 +137,19 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
-                _statCard('الدروس المكتملة', '${dbProvider.completedLessons} / ${dbProvider.totalLessons}', AppTheme.successColor),
+                StatCard(
+                  label: 'الدروس المكتملة',
+                  value: '${dbProvider.completedLessons} / ${dbProvider.totalLessons}',
+                  color: AppTheme.successColor,
+                  icon: Icons.check_circle,
+                ),
                 const SizedBox(width: 12),
-                _statCard('معدل الاختبارات', '${dbProvider.quizAverage.toStringAsFixed(1)}%', AppTheme.primaryColor),
+                StatCard(
+                  label: 'معدل الاختبارات',
+                  value: '${dbProvider.quizAverage.toStringAsFixed(1)}%',
+                  color: AppTheme.primaryColor,
+                  icon: Icons.quiz,
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -145,68 +159,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuCard(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 28,
-                backgroundColor: color.withValues(alpha: 0.15),
-                child: Icon(icon, color: color, size: 30),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                subtitle,
-                style: TextStyle(fontSize: 11, color: Colors.grey[600]),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _statCard(String label, String value, Color color) {
-    return Expanded(
-      child: Card(
-        color: color.withValues(alpha: 0.1),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-          child: Column(
-            children: [
-              Text(
-                value,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color),
-              ),
-              Text(
-                label,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

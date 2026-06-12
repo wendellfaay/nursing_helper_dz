@@ -75,7 +75,7 @@ class QuizResultScreen extends StatelessWidget {
               Text(
                 _level,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: _levelColor,
                 ),
@@ -83,13 +83,13 @@ class QuizResultScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 '$correctAnswers من $totalQuestions إجابات صحيحة',
-                style: const TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 22),
               ),
               const SizedBox(height: 8),
               Text(
                 'الموضوع: $topic',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 18,
                   color: Colors.grey[600],
                 ),
               ),

@@ -8,6 +8,8 @@ import '../../models/user_progress.dart';
 import '../../models/year.dart';
 import '../../models/semester.dart';
 import '../../models/module.dart';
+import '../../models/favorite.dart';
+import '../../models/achievement.dart';
 import '../constants/constants.dart';
 import 'seed_data.dart';
 
@@ -27,6 +29,7 @@ class DatabaseHelper {
       path,
       version: AppConstants.dbVersion,
       onCreate: _createTables,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -69,6 +72,7 @@ class DatabaseHelper {
         content TEXT NOT NULL,
         summary TEXT NOT NULL,
         keyPoints TEXT NOT NULL,
+        imageUrls TEXT DEFAULT '[]',
         isCompleted INTEGER DEFAULT 0,
         FOREIGN KEY (moduleId) REFERENCES modules(id)
       )
@@ -111,7 +115,43 @@ class DatabaseHelper {
         quizAverage REAL DEFAULT 0.0
       )
     ''');
+    await db.execute('''
+      CREATE TABLE favorites (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        contentId INTEGER NOT NULL,
+        contentType TEXT NOT NULL,
+        contentTitle TEXT NOT NULL,
+        dateAdded TEXT NOT NULL,
+        UNIQUE(contentId, contentType)
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE achievements (
+        id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+        title TEXT NOT NULL UNIQUE,
+        description TEXT NOT NULL,
+        icon TEXT NOT NULL,
+        requiredProgress INTEGER NOT NULL,
+        unlocked INTEGER DEFAULT 0,
+        unlockedDate TEXT
+      )
+    ''');
     await SeedData.insertSeedData(db);
+
+  }
+
+  static Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    await db.execute('DROP TABLE IF EXISTS favorites');
+    await db.execute('DROP TABLE IF EXISTS achievements');
+    await db.execute('DROP TABLE IF EXISTS user_progress');
+    await db.execute('DROP TABLE IF EXISTS quiz_results');
+    await db.execute('DROP TABLE IF EXISTS quiz_questions');
+    await db.execute('DROP TABLE IF EXISTS glossary_terms');
+    await db.execute('DROP TABLE IF EXISTS lessons');
+    await db.execute('DROP TABLE IF EXISTS modules');
+    await db.execute('DROP TABLE IF EXISTS semesters');
+    await db.execute('DROP TABLE IF EXISTS years');
+    await _createTables(db, newVersion);
   }
 
   static Future<List<Year>> getYears() async {
@@ -249,4 +289,82 @@ class DatabaseHelper {
     if (avg == null) return 0.0;
     return (avg as num).toDouble();
   }
+
+  // Favorites Functions
+  static Future<void> addFavorite(int contentId, String contentType, String contentTitle) async {
+    final db = await database;
+    await db.insert(
+      'favorites',
+      {
+        'contentId': contentId,
+        'contentType': contentType,
+        'contentTitle': contentTitle,
+        'dateAdded': DateTime.now().toIso8601String(),
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  static Future<void> removeFavorite(int contentId, String contentType) async {
+    final db = await database;
+    await db.delete(
+      'favorites',
+      where: 'contentId = ? AND contentType = ?',
+      whereArgs: [contentId, contentType],
+    );
+  }
+
+  static Future<List<Favorite>> getFavorites() async {
+    final db = await database;
+    final maps = await db.query('favorites', orderBy: 'dateAdded DESC');
+    return maps.map((m) => Favorite.fromMap(m)).toList();
+  }
+
+  static Future<bool> isFavorite(int contentId, String contentType) async {
+    final db = await database;
+    final result = await db.query(
+      'favorites',
+      where: 'contentId = ? AND contentType = ?',
+      whereArgs: [contentId, contentType],
+    );
+    return result.isNotEmpty;
+  }
+
+  // Achievements Functions
+  static Future<void> initializeAchievements() async {
+    final db = await database;
+    for (final achievement in Achievement.getDefaultAchievements()) {
+      await db.insert(
+        'achievements',
+        achievement.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      );
+    }
+  }
+
+  static Future<void> unlockAchievement(int id) async {
+    final db = await database;
+    await db.update(
+      'achievements',
+      {
+        'unlocked': 1,
+        'unlockedDate': DateTime.now().toIso8601String(),
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  static Future<List<Achievement>> getAchievements() async {
+    final db = await database;
+    final maps = await db.query('achievements', orderBy: 'id ASC');
+    return maps.map((m) => Achievement.fromMap(m)).toList();
+  }
+
+  static Future<int> getUnlockedAchievementsCount() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT COUNT(*) as count FROM achievements WHERE unlocked = 1');
+    return Sqflite.firstIntValue(result) ?? 0;
+  }
 }
+

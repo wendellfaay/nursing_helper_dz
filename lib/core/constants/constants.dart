@@ -1,9 +1,9 @@
 class AppConstants {
-  static const String appName = 'Nursing Helper DZ';
+  static const String appName = 'الرائد للصحة';
   static const String appVersion = '2.0.0';
 
   static const String dbName = 'nursing_helper.db';
-  static const int dbVersion = 2;
+  static const int dbVersion = 4;
 
   static const List<String> academicYears = [
     'السنة الأولى',
@@ -17,6 +17,11 @@ class AppConstants {
     'الأمراض',
     'الأدوية',
     'الإسعافات الأولية',
+    'تاريخ التمريض',
+    'الجهاز التنفسي',
+    'الجهاز الهضمي',
+    'التحاليل المخبرية',
+    'تقنيات الحقن والبزل',
   ];
 
   static const List<String> difficultyLevels = [
@@ -31,5 +36,8 @@ class AppConstants {
     'التمريض',
     'الأمراض',
     'الأدوية',
+    'الجهاز التنفسي',
+    'الجهاز الهضمي',
+    'التحاليل المخبرية',
   ];
 }

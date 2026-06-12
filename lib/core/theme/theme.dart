@@ -53,21 +53,21 @@ class AppTheme {
       textTheme: const TextTheme(
         headlineLarge: TextStyle(
           color: textPrimary,
-          fontSize: 24,
+          fontSize: 30,
           fontWeight: FontWeight.bold,
         ),
         headlineMedium: TextStyle(
           color: textPrimary,
-          fontSize: 20,
+          fontSize: 26,
           fontWeight: FontWeight.w600,
         ),
         bodyLarge: TextStyle(
           color: textPrimary,
-          fontSize: 16,
+          fontSize: 22,
         ),
         bodyMedium: TextStyle(
           color: textSecondary,
-          fontSize: 14,
+          fontSize: 18,
         ),
       ),
     );
@@ -111,21 +111,21 @@ class AppTheme {
       textTheme: const TextTheme(
         headlineLarge: TextStyle(
           color: darkTextPrimary,
-          fontSize: 24,
+          fontSize: 30,
           fontWeight: FontWeight.bold,
         ),
         headlineMedium: TextStyle(
           color: darkTextPrimary,
-          fontSize: 20,
+          fontSize: 26,
           fontWeight: FontWeight.w600,
         ),
         bodyLarge: TextStyle(
           color: darkTextPrimary,
-          fontSize: 16,
+          fontSize: 22,
         ),
         bodyMedium: TextStyle(
           color: darkTextSecondary,
-          fontSize: 14,
+          fontSize: 18,
         ),
       ),
     );

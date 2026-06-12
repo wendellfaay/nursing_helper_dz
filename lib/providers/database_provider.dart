@@ -8,6 +8,8 @@ import '../models/user_progress.dart';
 import '../models/year.dart';
 import '../models/semester.dart';
 import '../models/module.dart';
+import '../models/favorite.dart';
+import '../models/achievement.dart';
 
 class DatabaseProvider extends ChangeNotifier {
   bool _initialized = false;
@@ -69,4 +71,26 @@ class DatabaseProvider extends ChangeNotifier {
     await DatabaseHelper.saveQuizResult(result);
     await refreshStats();
   }
+
+  // Favorites
+  Future<void> addFavorite(int contentId, String contentType, String contentTitle) =>
+      DatabaseHelper.addFavorite(contentId, contentType, contentTitle);
+
+  Future<void> removeFavorite(int contentId, String contentType) =>
+      DatabaseHelper.removeFavorite(contentId, contentType);
+
+  Future<List<Favorite>> getFavorites() => DatabaseHelper.getFavorites();
+
+  Future<bool> isFavorite(int contentId, String contentType) =>
+      DatabaseHelper.isFavorite(contentId, contentType);
+
+  // Achievements
+  Future<void> initializeAchievements() => DatabaseHelper.initializeAchievements();
+
+  Future<void> unlockAchievement(int id) => DatabaseHelper.unlockAchievement(id);
+
+  Future<List<Achievement>> getAchievements() => DatabaseHelper.getAchievements();
+
+  Future<int> getUnlockedAchievementsCount() => DatabaseHelper.getUnlockedAchievementsCount();
 }
+

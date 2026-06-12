@@ -7,6 +7,7 @@ class Lesson {
   final String content;
   final String summary;
   final String keyPoints;
+  final List<String> imageUrls;
   final bool isCompleted;
 
   Lesson({
@@ -18,6 +19,7 @@ class Lesson {
     required this.content,
     required this.summary,
     required this.keyPoints,
+    this.imageUrls = const [],
     this.isCompleted = false,
   });
 
@@ -30,6 +32,7 @@ class Lesson {
         'content': content,
         'summary': summary,
         'keyPoints': keyPoints,
+        'imageUrls': imageUrls.join('||'),
         'isCompleted': isCompleted ? 1 : 0,
       };
 
@@ -42,6 +45,9 @@ class Lesson {
         content: map['content'],
         summary: map['summary'],
         keyPoints: map['keyPoints'],
+        imageUrls: (map['imageUrls'] as String?)?.isNotEmpty == true
+            ? (map['imageUrls'] as String).split('||')
+            : [],
         isCompleted: map['isCompleted'] == 1,
       );
 }

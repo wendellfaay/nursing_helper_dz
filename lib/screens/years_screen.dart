@@ -94,7 +94,7 @@ class _YearsScreenState extends State<YearsScreen> {
                                   Text(
                                     year.nameAr,
                                     style: const TextStyle(
-                                      fontSize: 22,
+                                      fontSize: 26,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -102,7 +102,7 @@ class _YearsScreenState extends State<YearsScreen> {
                                   Text(
                                     year.nameFr,
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 18,
                                       color: Colors.grey[600],
                                       fontStyle: FontStyle.italic,
                                     ),

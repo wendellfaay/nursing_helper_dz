@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../core/widgets/loading_view.dart';
+import '../core/widgets/empty_state.dart';
 import '../providers/database_provider.dart';
 import '../models/user_progress.dart';
 import '../models/quiz_result.dart';
@@ -41,7 +43,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         title: const Text('التقدم الدراسي'),
       ),
       body: _loading
-          ? const Center(child: CircularProgressIndicator())
+          ? const LoadingView()
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -67,19 +69,9 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   ),
                   const SizedBox(height: 16),
                   if (_quizResults.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(32),
-                        child: Column(
-                          children: [
-                            Icon(Icons.quiz_outlined,
-                                size: 48, color: Colors.grey[400]),
-                            const SizedBox(height: 8),
-                            Text('لم تخضع لأي اختبار بعد',
-                                style: TextStyle(color: Colors.grey[600])),
-                          ],
-                        ),
-                      ),
+                    const EmptyState(
+                      icon: Icons.quiz_outlined,
+                      message: 'لم تخضع لأي اختبار بعد',
                     )
                   else
                     ..._quizResults.take(10).map((r) => _buildResultCard(r)),
@@ -120,7 +112,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   Text(
                     level,
                     style: const TextStyle(
-                      fontSize: 24,
+                      fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -134,7 +126,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 Text(
                   '$totalCompleted/$total',
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: AppTheme.primaryColor,
                   ),
@@ -148,7 +140,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 Text(
                   '${avg.toStringAsFixed(0)}%',
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: AppTheme.successColor,
                   ),
@@ -174,7 +166,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 Text(
                   '${p.completedLessons}/${p.totalLessons}',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 18,
                     color: Colors.grey[600],
                   ),
                 ),
@@ -182,7 +174,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 Text(
                   p.category,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -208,7 +200,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
             Text(
               '${p.percentage.toStringAsFixed(0)}%',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 15,
                 color: Colors.grey[600],
               ),
             ),
@@ -236,11 +228,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
           ),
         ),
         title: Text(r.topic),
-        subtitle: Text(date, style: const TextStyle(fontSize: 12)),
+        subtitle: Text(date, style: const TextStyle(fontSize: 15)),
         trailing: Text(
           '${r.percentage.toStringAsFixed(0)}%',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
             color: r.percentage >= 60
                 ? AppTheme.successColor

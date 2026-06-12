@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../core/widgets/loading_view.dart';
+import '../core/widgets/empty_state.dart';
 import '../providers/database_provider.dart';
 import '../models/glossary_term.dart';
 import '../core/theme/theme.dart';
@@ -90,19 +92,11 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
           ),
           Expanded(
             child: _loading
-                ? const Center(child: CircularProgressIndicator())
+                ? const LoadingView()
                 : _filteredTerms.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.search_off,
-                                size: 64, color: Colors.grey[400]),
-                            const SizedBox(height: 16),
-                            Text('لا توجد نتائج',
-                                style: TextStyle(color: Colors.grey[600])),
-                          ],
-                        ),
+                    ? const EmptyState(
+                        icon: Icons.search_off,
+                        message: 'لا توجد نتائج',
                       )
                     : ListView.builder(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -136,14 +130,14 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
         title: Text(
           term.termAr,
           style: const TextStyle(
-            fontSize: 16,
+            fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Text(
           term.termFr,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 18,
             color: Colors.grey[600],
             fontStyle: FontStyle.italic,
           ),
@@ -164,7 +158,7 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                   child: Text(
                     term.definition,
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 18,
                       height: 1.5,
                     ),
                   ),
@@ -172,7 +166,7 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                 const SizedBox(height: 8),
                 Chip(
                   label: Text(term.category,
-                      style: const TextStyle(fontSize: 11)),
+                      style: const TextStyle(fontSize: 14)),
                   backgroundColor: AppTheme.secondaryColor.withValues(alpha: 0.1),
                   padding: EdgeInsets.zero,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

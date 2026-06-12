@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../core/constants/constants.dart';
 import '../providers/database_provider.dart';
 import '../models/quiz_question.dart';
 import '../models/quiz_result.dart';
@@ -23,7 +24,7 @@ class _QuizScreenState extends State<QuizScreen> {
   
   String? _selectedTopic;
 
-  final List<String> _topics = ['الجميع', 'التشريح', 'التمريض', 'الأمراض'];
+  final List<String> _topics = AppConstants.quizTopics;
 
   @override
   void initState() {
@@ -140,7 +141,7 @@ class _QuizScreenState extends State<QuizScreen> {
               'أجب عن 10 أسئلة اختيار من متعدد\nفي مواضيع التمريض المختلفة',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 20,
                 color: Colors.grey[600],
                 height: 1.5,
               ),
@@ -216,7 +217,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     child: Text(
                       question.topic,
                       style: const TextStyle(
-                        fontSize: 12,
+                        fontSize: 15,
                         color: AppTheme.primaryColor,
                       ),
                     ),
@@ -225,7 +226,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   Text(
                     question.question,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 22,
                       fontWeight: FontWeight.w600,
                       height: 1.5,
                     ),
@@ -280,7 +281,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                     child: Text(
                                       String.fromCharCode(65 + index),
                                       style: const TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -289,7 +290,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                 Expanded(
                                   child: Text(
                                     option,
-                                    style: const TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 18),
                                     textAlign: TextAlign.right,
                                   ),
                                 ),
@@ -329,7 +330,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     ),
                     child: Text(
                       question.explanation,
-                      style: const TextStyle(fontSize: 13, height: 1.5),
+                      style: const TextStyle(fontSize: 16, height: 1.5),
                     ),
                   ),
                   const SizedBox(height: 8),

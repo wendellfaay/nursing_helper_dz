@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../core/widgets/loading_view.dart';
+import '../core/widgets/empty_state.dart';
 import '../providers/database_provider.dart';
 import '../models/module.dart';
 import '../models/lesson.dart';
@@ -48,17 +50,11 @@ class _ModulesScreenState extends State<ModulesScreen> {
         title: Text(widget.semesterName),
       ),
       body: _loading
-          ? const Center(child: CircularProgressIndicator())
+          ? const LoadingView()
           : _modules.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.menu_book_outlined, size: 64, color: Colors.grey[400]),
-                      const SizedBox(height: 16),
-                      Text('لا توجد مواد في هذا السداسي', style: TextStyle(color: Colors.grey[600])),
-                    ],
-                  ),
+              ? const EmptyState(
+                  icon: Icons.menu_book_outlined,
+                  message: 'لا توجد مواد في هذا السداسي',
                 )
               : ListView.builder(
                   padding: const EdgeInsets.all(12),
@@ -86,7 +82,7 @@ class _ModulesScreenState extends State<ModulesScreen> {
             style: const TextStyle(
               color: AppTheme.primaryColor,
               fontWeight: FontWeight.bold,
-              fontSize: 12,
+              fontSize: 15,
             ),
           ),
         ),
@@ -100,14 +96,14 @@ class _ModulesScreenState extends State<ModulesScreen> {
             if (module.description != null)
               Text(
                 module.description!,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 15, color: Colors.grey[600]),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             if (lessons.isNotEmpty)
               Text(
                 '$completedCount/${lessons.length} مكتمل',
-                style: TextStyle(fontSize: 11, color: completedCount == lessons.length ? AppTheme.successColor : Colors.grey[500]),
+                style: TextStyle(fontSize: 14, color: completedCount == lessons.length ? AppTheme.successColor : Colors.grey[500]),
               ),
           ],
         ),
@@ -125,7 +121,7 @@ class _ModulesScreenState extends State<ModulesScreen> {
                     color: lesson.isCompleted ? AppTheme.successColor : Colors.grey[400],
                     size: 20,
                   ),
-                  title: Text(lesson.title, style: const TextStyle(fontSize: 14)),
+                  title: Text(lesson.title, style: const TextStyle(fontSize: 18)),
                   trailing: const Icon(Icons.chevron_left, size: 18),
                   onTap: () => Navigator.push(
                     context,

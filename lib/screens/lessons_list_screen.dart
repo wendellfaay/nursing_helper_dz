@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/constants/constants.dart';
+import '../core/widgets/loading_view.dart';
+import '../core/widgets/empty_state.dart';
+import '../core/widgets/lesson_card.dart';
+import '../core/theme/theme.dart';
 import '../providers/database_provider.dart';
 import '../models/lesson.dart';
-import '../core/theme/theme.dart';
 import 'lesson_detail_screen.dart';
 
 class LessonsListScreen extends StatefulWidget {
@@ -80,87 +83,30 @@ class _LessonsListScreenState extends State<LessonsListScreen> {
           ),
           Expanded(
             child: _loading
-                ? const Center(child: CircularProgressIndicator())
+                ? const LoadingView()
                 : _lessons.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.menu_book_outlined,
-                                size: 64, color: Colors.grey[400]),
-                            const SizedBox(height: 16),
-                            Text('لا توجد دروس في هذا القسم',
-                                style: TextStyle(color: Colors.grey[600])),
-                          ],
-                        ),
+                    ? const EmptyState(
+                        icon: Icons.menu_book_outlined,
+                        message: 'لا توجد دروس في هذا القسم',
                       )
                     : ListView.builder(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         itemCount: _lessons.length,
                         itemBuilder: (context, index) {
                           final lesson = _lessons[index];
-                          return _buildLessonCard(lesson);
+                          return LessonCard(
+                            lesson: lesson,
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => LessonDetailScreen(lesson: lesson),
+                              ),
+                            ).then((_) => _loadLessons()),
+                          );
                         },
                       ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildLessonCard(Lesson lesson) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => LessonDetailScreen(lesson: lesson),
-          ),
-        ).then((_) => _loadLessons()),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: lesson.isCompleted
-                    ? AppTheme.successColor.withValues(alpha: 0.15)
-                    : AppTheme.primaryColor.withValues(alpha: 0.1),
-                child: Icon(
-                  lesson.isCompleted ? Icons.check_circle : Icons.menu_book,
-                  color: lesson.isCompleted
-                      ? AppTheme.successColor
-                      : AppTheme.primaryColor,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      lesson.title,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      lesson.category,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Icon(Icons.chevron_left, color: Colors.grey),
-            ],
-          ),
-        ),
       ),
     );
   }

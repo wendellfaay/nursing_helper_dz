@@ -34,6 +34,7 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
       content: _lesson.content,
       summary: _lesson.summary,
       keyPoints: _lesson.keyPoints,
+      imageUrls: _lesson.imageUrls,
       isCompleted: true,
     ));
     if (mounted) {
@@ -61,13 +62,13 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
               children: [
                 Chip(
                   label: Text(_lesson.category,
-                      style: const TextStyle(fontSize: 12)),
+                      style: const TextStyle(fontSize: 15)),
                   backgroundColor: AppTheme.primaryColor.withValues(alpha: 0.1),
                 ),
                 const SizedBox(width: 8),
                 Chip(
                   label: Text(_lesson.academicYear,
-                      style: const TextStyle(fontSize: 12)),
+                      style: const TextStyle(fontSize: 15)),
                   backgroundColor: AppTheme.secondaryColor.withValues(alpha: 0.1),
                 ),
               ],
@@ -78,10 +79,37 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 16),
+            if (_lesson.imageUrls.isNotEmpty)
+              SizedBox(
+                height: 200,
+                child: PageView.builder(
+                  itemCount: _lesson.imageUrls.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          _lesson.imageUrls[index],
+                          fit: BoxFit.contain,
+                          errorBuilder: (_, __, ___) =>
+                              const SizedBox.shrink(),
+                          loadingBuilder: (_, child, progress) =>
+                              progress == null
+                                  ? child
+                                  : const Center(
+                                      child: CircularProgressIndicator()),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            const SizedBox(height: 16),
             Text(
               _lesson.content,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 20,
                 height: 1.7,
               ),
             ),
@@ -107,7 +135,7 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
                       Text(
                         'نقاط مهمة',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppTheme.warningColor,
                         ),
@@ -118,7 +146,7 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
                   Text(
                     _lesson.keyPoints,
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 18,
                       height: 1.6,
                     ),
                   ),
@@ -148,7 +176,7 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
                         Text(
                           'ملخص الدرس',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: AppTheme.successColor,
                           ),
@@ -159,7 +187,7 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
                     Text(
                       _lesson.summary,
                       style: const TextStyle(
-                        fontSize: 14,
+                        fontSize: 18,
                         height: 1.6,
                       ),
                     ),

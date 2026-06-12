@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../core/widgets/loading_view.dart';
+import '../core/widgets/empty_state.dart';
 import '../providers/database_provider.dart';
 import '../models/lesson.dart';
 import '../models/glossary_term.dart';
@@ -93,19 +95,13 @@ class _SearchScreenState extends State<SearchScreen> {
           if (_loading)
             const Padding(
               padding: EdgeInsets.all(32),
-              child: CircularProgressIndicator(),
+              child: LoadingView(),
             ),
           if (!_loading && _searched && _lessonResults.isEmpty && _termResults.isEmpty)
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
-                    const SizedBox(height: 16),
-                    Text('لا توجد نتائج للبحث', style: TextStyle(color: Colors.grey[600])),
-                  ],
-                ),
+            const Expanded(
+              child: EmptyState(
+                icon: Icons.search_off,
+                message: 'لا توجد نتائج للبحث',
               ),
             ),
           if (_lessonResults.isNotEmpty)
@@ -118,7 +114,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     child: Text(
                       'الدروس (${_lessonResults.length})',
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.primaryColor,
                       ),
@@ -128,8 +124,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         margin: const EdgeInsets.only(bottom: 8),
                         child: ListTile(
                           leading: const Icon(Icons.menu_book, color: AppTheme.primaryColor),
-                          title: Text(lesson.title, style: const TextStyle(fontSize: 14)),
-                          subtitle: Text(lesson.category, style: const TextStyle(fontSize: 12)),
+                          title: Text(lesson.title, style: const TextStyle(fontSize: 18)),
+                          subtitle: Text(lesson.category, style: const TextStyle(fontSize: 15)),
                           trailing: const Icon(Icons.chevron_left, size: 18),
                           onTap: () => Navigator.push(
                             context,
@@ -143,7 +139,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: Text(
                         'المصطلحات (${_termResults.length})',
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppTheme.successColor,
                         ),
@@ -153,12 +149,12 @@ class _SearchScreenState extends State<SearchScreen> {
                         margin: const EdgeInsets.only(bottom: 8),
                         child: ExpansionTile(
                           tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-                          title: Text(term.termAr, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-                          subtitle: Text(term.termFr, style: TextStyle(fontSize: 12, color: Colors.grey[600], fontStyle: FontStyle.italic)),
+                          title: Text(term.termAr, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                          subtitle: Text(term.termFr, style: TextStyle(fontSize: 15, color: Colors.grey[600], fontStyle: FontStyle.italic)),
                           children: [
                             Padding(
                               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                              child: Text(term.definition, style: const TextStyle(fontSize: 13, height: 1.5)),
+                              child: Text(term.definition, style: const TextStyle(fontSize: 16, height: 1.5)),
                             ),
                           ],
                         ),
