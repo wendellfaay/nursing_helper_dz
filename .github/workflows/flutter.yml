@@ -74,7 +74,33 @@ jobs:
         run: |
           flutter test integration_test/app_test.dart -d android --no-pub
 
-# Note: Integration tests in CI require emulator support and can be slow.
-# If this job fails due to AVD/emulator limitations on GitHub-hosted runners,
-# consider using Firebase Test Lab or GitHub-hosted self-hosted runners with
-# pre-configured emulators.
+  build_apk:
+    name: Build APK
+    runs-on: ubuntu-latest
+    needs: analyze_and_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: nursing-helper-dz-apk
+          path: build/app/outputs/flutter-apk/*.apk
