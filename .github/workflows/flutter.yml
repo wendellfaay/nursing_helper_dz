@@ -1,10 +1,10 @@
-name: Flutter CI
+﻿name: Flutter CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master, main ]
   pull_request:
-    branches: [ main ]
+    branches: [ master, main ]
 
 jobs:
   analyze_and_test:
@@ -78,110 +78,3 @@ jobs:
 # If this job fails due to AVD/emulator limitations on GitHub-hosted runners,
 # consider using Firebase Test Lab or GitHub-hosted self-hosted runners with
 # pre-configured emulators.
-name: Flutter CI/CD
-
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
-
-jobs:
-  analyze_and_test:
-    name: Analyze and Test
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.0'
-          channel: 'stable'
-      
-      - name: Get dependencies
-        run: flutter pub get
-      
-      - name: Format check
-        run: dart format --set-exit-if-changed lib/ test/
-      
-      - name: Analyze
-        run: flutter analyze
-      
-      - name: Run tests
-        run: flutter test
-
-  build_apk:
-    name: Build APK
-    runs-on: ubuntu-latest
-    needs: analyze_and_test
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.0'
-          channel: 'stable'
-      
-      - name: Get dependencies
-        run: flutter pub get
-      
-      - name: Build APK
-        run: flutter build apk --release --split-per-abi
-      
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: flutter-apk
-          path: build/app/outputs/flutter-apk/
-
-  build_web:
-    name: Build Web
-    runs-on: ubuntu-latest
-    needs: analyze_and_test
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.0'
-          channel: 'stable'
-      
-      - name: Get dependencies
-        run: flutter pub get
-      
-      - name: Build Web
-        run: flutter build web --release
-      
-      - name: Upload Web build
-        uses: actions/upload-artifact@v3
-        with:
-          name: flutter-web
-          path: build/web/
-
-  code_quality:
-    name: Code Quality Check
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.0'
-          channel: 'stable'
-      
-      - name: Get dependencies
-        run: flutter pub get
-      
-      - name: Check test coverage
-        run: flutter test --coverage
-      
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
