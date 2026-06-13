@@ -164,7 +164,7 @@ class SeedData {
 فهم المستويات والأقسام التشريحية يساعد الممرض في وصف موقع الأعراض بدقة واختيار الوضعية المناسبة لكل حالة.''',
         'summary': 'التشريح يدرس بنية الجسم، والفيزيولوجيا تدرس وظائفه. ينقسم التشريح إلى عياني ومجهري. للجسم 11 جهازاً رئيسياً.',
         'keyPoints': '• التشريح: عياني (بالعين) ومجهري (بالمجهر)\n• 11 جهازاً رئيسياً في الجسم\n• المستويات التنظيمية: كيميائي → خلوي → نسيجي → عضوي → جهازي\n• مصطلحات التوجيه: أمامي/خلفي، علوي/سفلي، إنسي/وحشي',
-        'imageUrls': 'https://upload.wikimedia.org/wikipedia/commons/1/1e/Human_body_and_internal_organs_with_labels.png||https://upload.wikimedia.org/wikipedia/commons/f/f0/Human_skeleton_front_en.svg',
+        'imageUrls': 'https://upload.wikimedia.org/wikipedia/ar/a/ad/Human_body_systems_%D8%A7%D9%84%D8%A7%D9%86%D8%B3%D8%A7%D9%86_%D8%A7%D9%84%D8%AC%D8%B3%D9%85.png||https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/220px-Camponotus_flavomarginatus_ant.jpg||https://upload.wikimedia.org/wikipedia/commons/8/8c/Human_skeleton_front-ar.svg',
       },
       {
         'moduleId': 1,
@@ -230,7 +230,7 @@ class SeedData {
 - تثقيف المريض: أهمية التدرج في الحركة (Mobilisation précoce)، التغذية الغنية بالبروتين والكالسيوم، متابعة العلاج الطبيعي (Kinésithérapie)''',
         'summary': 'الجهاز العضلي الهيكلي يشمل 206 عظمة وحوالي 600 عضلة. الهيكل محوري (80 عظمة) وطرفي (126 عظمة).',
         'keyPoints': '• 206 عظمة: محوري (80) + طرفي (126)\n• أنواع العظام: طويلة، قصيرة، مسطحة، غير منتظمة\n• 3 أنواع عضلات: هيكلية، ملساء، قلبية\n• المفاصل: ثابتة، نصف متحركة، متحركة',
-        'imageUrls': 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Human_skeleton_front_en.svg||https://upload.wikimedia.org/wikipedia/commons/3/30/Illu_muscle_structure.jpg',
+        'imageUrls': 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Human_skeleton_front-ar.svg||https://upload.wikimedia.org/wikipedia/commons/3/30/Illu_muscle_structure.jpg||https://upload.wikimedia.org/wikipedia/ar/thumb/5/5c/Muscles.png/400px-Muscles.png',
       },
 
       // Anthropologie & Psychologie (moduleId=2)

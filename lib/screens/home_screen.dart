@@ -6,7 +6,6 @@ import '../core/widgets/stat_card.dart';
 import '../providers/app_provider.dart';
 import '../providers/database_provider.dart';
 import 'years_screen.dart';
-import 'lessons_list_screen.dart';
 import 'glossary_screen.dart';
 import 'quiz_screen.dart';
 import 'progress_screen.dart';
@@ -79,16 +78,6 @@ class HomeScreen extends StatelessWidget {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const YearsScreen()),
-                    ),
-                  ),
-                  MenuCard(
-                    icon: Icons.menu_book_rounded,
-                    title: 'جميع الدروس',
-                    subtitle: 'دروس وملخصات',
-                    color: const Color(0xFF2E7D32),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LessonsListScreen()),
                     ),
                   ),
                   MenuCard(
